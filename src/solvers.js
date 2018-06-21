@@ -19,6 +19,7 @@
 
 window.findNRooksSolution = function(n) {
   let start = new Date();
+  // console.log(`Finding a single solution for ${n} rooks...`);
   let result = [];
   //iterate through rows
   for (let i = 0; i < n; i++) {
@@ -38,7 +39,7 @@ window.findNRooksSolution = function(n) {
   let runTime = end - start;
   resultString = JSON.stringify(result);
   // console.log(`Single solution for ${n} rooks: ${result}`);
-  // console.log(runTime);
+  // console.log(`It took ${runTime}ms to run`);
   return result;
 };
 
@@ -48,6 +49,7 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   let start = new Date();
+  console.log(`Finding solutions count for ${n} rooks...`);
   let result = 0;
   let rooks = n;
   let boards = [];
@@ -102,26 +104,139 @@ window.countNRooksSolutions = function(n) {
   let end = new Date();
   let runTime = end - start;
   resultString = JSON.stringify(result);
-  console.log(`Number of solutions for ${n} rooks: ${result}`);
+  console.log(`Single solution for ${n} rooks: ${result}`);
   console.log(`It took ${runTime}ms to run`);
   return result;
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
-  let board = new Board({ n: n });
-  console.log(
-    'Single solution for ' + n + ' queens:',
-    JSON.stringify(solution)
-  );
-  return solution;
+  console.log(`Finding a single solution for ${n} queens...`);
+  let start = new Date();
+  let result = [];
+  let rooks = n;
+  let boards = [];
+  
+  // create possibilty array
+  var rows = [];
+  let rowCount = 0;
+  for (let i = 0; i < n; i++) {
+    rows.push(rowCount);
+    rowCount++;
+  }
+  
+  // create permutations
+  var sequences = [];
+  var makeSequences = function (piecesToGo, playedSoFar) {
+    if (piecesToGo === 0) {
+      if (new Set(playedSoFar).size === playedSoFar.length) {
+        sequences.push(playedSoFar);
+      }
+      return;
+    }
+    for (var i = 0; i < rows.length; i++) {
+      var currentVal = rows[i];
+      makeSequences(piecesToGo - 1, playedSoFar.concat(currentVal));
+    }
+  };
+  makeSequences(n, []);
+  
+  // create board states
+  sequences.forEach(seq => {
+    let board = new Board({n: n});
+    seq.forEach((item, idx) => {
+      board.togglePiece(item, idx);
+    });
+    boards.push(board);
+  });
+
+  let solution;
+  // validate boards
+  for (let i = 0; i < boards.length; i++) {
+    if (boards[i].hasAnyQueensConflicts() === false) {
+      solution = boards[i];
+    }
+  }
+  
+  if (solution !== undefined) {
+    if (solution.attributes.n !== undefined) {
+      delete solution.attributes.n;
+    }
+    
+    // debugger;
+    for (let i = 0; i < n; i++) {
+      result.push(solution.attributes[i]);
+    }
+  } else if (n === 2) {
+    result = [[0, 0], [0, 0]];
+  } else if (n === 3) {
+    result = [[0, 0], [0, 0], [0, 0]];
+  }
+  
+  // end process and time trials
+  resultString = JSON.stringify(result);
+  let end = new Date();
+  let runTime = end - start;
+  console.log(`Single solution for ${n} queens: ${result}`);
+  console.log(`It took ${runTime}ms to run`);
+  
+  return result;
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
-  let board = new Board({ n: n });
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+  console.log(`Finding solutions count for ${n} queens...`);
+  let start = new Date();
+  let result = 0;
+  let rooks = n;
+  let boards = [];
+
+  // create possibilty array
+  var rows = [];
+  let rowCount = 0;
+  for (let i = 0; i < n; i++) {
+    rows.push(rowCount);
+    rowCount++;
+  }
+  
+  // create permutations
+  var sequences = [];
+  var makeSequences = function (piecesToGo, playedSoFar) {
+    if (piecesToGo === 0) {
+      if (new Set(playedSoFar).size === playedSoFar.length) {
+        sequences.push(playedSoFar);
+      }
+      return;
+    }
+    for (var i = 0; i < rows.length; i++) {
+      var currentVal = rows[i];
+      makeSequences(piecesToGo - 1, playedSoFar.concat(currentVal));
+    }
+  };
+  makeSequences(n, []);
+  
+  // create board states
+  sequences.forEach(seq => {
+    let board = new Board({n: n});
+    seq.forEach((item, idx) => {
+      board.togglePiece(item, idx);
+    });
+    boards.push(board);
+  });
+
+
+  // validate boards
+  for (let i = 0; i < boards.length; i++) {
+    if (boards[i].hasAnyQueensConflicts() === false) {
+      result++;
+    }
+  }
+  
+  // end process and time trials
+  let end = new Date();
+  let runTime = end - start;
+  resultString = JSON.stringify(result);
+  console.log(`Number of solutions for ${n} queens: ${result}`);
+  console.log(`It took ${runTime}ms to run`);
+  return result;
 };
