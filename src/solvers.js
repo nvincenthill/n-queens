@@ -1,3 +1,6 @@
+// all tests pass in <20sec
+// solution not optimal
+
 /*           _
    ___  ___ | |_   _____ _ __ ___
   / __|/ _ \| \ \ / / _ \ '__/ __|
@@ -14,7 +17,7 @@
 
 //input: integer representing the number of rooks and board length
 //output: Nested Array that represents a board state that is correct
-//constraints: time complexity?
+//constraints: time complexity?4
 //edge cases: n = 1 -> always true
 
 window.findNRooksSolution = function(n) {
@@ -125,8 +128,8 @@ window.findNQueensSolution = function(n) {
     rowCount++;
   }
   
-  // create permutations
   var sequences = [];
+  // create permutations
   var makeSequences = function (piecesToGo, playedSoFar) {
     if (piecesToGo === 0) {
       if (new Set(playedSoFar).size === playedSoFar.length) {
