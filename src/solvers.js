@@ -18,14 +18,14 @@
 //edge cases: n = 1 -> always true
 
 window.findNRooksSolution = function(n) {
-  let start = new Date();
+  var start = new Date();
   // console.log(`Finding a single solution for ${n} rooks...`);
-  let result = [];
+  var result = [];
   //iterate through rows
-  for (let i = 0; i < n; i++) {
-    let temp = [];
+  for (var i = 0; i < n; i++) {
+    var temp = [];
     //iterate through columns
-    for (let j = 0; j < n; j++) {
+    for (var j = 0; j < n; j++) {
       //toggle if i === j
       if (i === j) {
         temp.push(1);
@@ -35,8 +35,8 @@ window.findNRooksSolution = function(n) {
     }
     result.push(temp);
   }  
-  let end = new Date();
-  let runTime = end - start;
+  var end = new Date();
+  var runTime = end - start;
   resultString = JSON.stringify(result);
   // console.log(`Single solution for ${n} rooks: ${result}`);
   // console.log(`It took ${runTime}ms to run`);
@@ -48,11 +48,11 @@ window.findNRooksSolution = function(n) {
 // Constraints = Time/Space complexity?
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  let start = new Date();
+  var start = new Date();
   console.log(`Finding solutions count for ${n} rooks...`);
-  let result = 0;
-  let rooks = n;
-  let boards = [];
+  var result = 0;
+  var rooks = n;
+  var boards = [];
 
   if (n === 1) {
     result++;
@@ -61,8 +61,8 @@ window.countNRooksSolutions = function(n) {
   
   // create possibilty array
   var rows = [];
-  let rowCount = 0;
-  for (let i = 0; i < n; i++) {
+  var rowCount = 0;
+  for (var i = 0; i < n; i++) {
     rows.push(rowCount);
     rowCount++;
   }
@@ -85,7 +85,7 @@ window.countNRooksSolutions = function(n) {
   
   // create board states
   sequences.forEach(seq => {
-    let board = new Board({n: n});
+    var board = new Board({n: n});
     seq.forEach((item, idx) => {
       board.togglePiece(item, idx);
     });
@@ -94,15 +94,15 @@ window.countNRooksSolutions = function(n) {
 
 
   // validate boards
-  for (let i = 0; i < boards.length; i++) {
+  for (var i = 0; i < boards.length; i++) {
     if (boards[i].hasAnyRooksConflicts() === false) {
       result++;
     }
   }
   
   // end process and time trials
-  let end = new Date();
-  let runTime = end - start;
+  var end = new Date();
+  var runTime = end - start;
   resultString = JSON.stringify(result);
   console.log(`Single solution for ${n} rooks: ${result}`);
   console.log(`It took ${runTime}ms to run`);
@@ -112,15 +112,15 @@ window.countNRooksSolutions = function(n) {
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
   console.log(`Finding a single solution for ${n} queens...`);
-  let start = new Date();
-  let result = [];
-  let rooks = n;
-  let boards = [];
+  var start = new Date();
+  var result = [];
+  var rooks = n;
+  var boards = [];
   
   // create possibilty array
   var rows = [];
-  let rowCount = 0;
-  for (let i = 0; i < n; i++) {
+  var rowCount = 0;
+  for (var i = 0; i < n; i++) {
     rows.push(rowCount);
     rowCount++;
   }
@@ -143,16 +143,16 @@ window.findNQueensSolution = function(n) {
   
   // create board states
   sequences.forEach(seq => {
-    let board = new Board({n: n});
+    var board = new Board({n: n});
     seq.forEach((item, idx) => {
       board.togglePiece(item, idx);
     });
     boards.push(board);
   });
 
-  let solution;
+  var solution;
   // validate boards
-  for (let i = 0; i < boards.length; i++) {
+  for (var i = 0; i < boards.length; i++) {
     if (boards[i].hasAnyQueensConflicts() === false) {
       solution = boards[i];
     }
@@ -164,7 +164,7 @@ window.findNQueensSolution = function(n) {
     }
     
     // debugger;
-    for (let i = 0; i < n; i++) {
+    for (var i = 0; i < n; i++) {
       result.push(solution.attributes[i]);
     }
   } else if (n === 2) {
@@ -175,8 +175,8 @@ window.findNQueensSolution = function(n) {
   
   // end process and time trials
   resultString = JSON.stringify(result);
-  let end = new Date();
-  let runTime = end - start;
+  var end = new Date();
+  var runTime = end - start;
   console.log(`Single solution for ${n} queens: ${result}`);
   console.log(`It took ${runTime}ms to run`);
   
@@ -186,15 +186,15 @@ window.findNQueensSolution = function(n) {
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
   console.log(`Finding solutions count for ${n} queens...`);
-  let start = new Date();
-  let result = 0;
-  let rooks = n;
-  let boards = [];
+  var start = new Date();
+  var result = 0;
+  var rooks = n;
+  var boards = [];
 
   // create possibilty array
   var rows = [];
-  let rowCount = 0;
-  for (let i = 0; i < n; i++) {
+  var rowCount = 0;
+  for (var i = 0; i < n; i++) {
     rows.push(rowCount);
     rowCount++;
   }
@@ -215,28 +215,26 @@ window.countNQueensSolutions = function(n) {
   };
   makeSequences(n, []);
   
+  var middle = new Date();
   // create board states
   sequences.forEach(seq => {
-    let board = new Board({n: n});
+    var board = new Board({n: n});
     seq.forEach((item, idx) => {
       board.togglePiece(item, idx);
     });
-    boards.push(board);
-  });
-
-
-  // validate boards
-  for (let i = 0; i < boards.length; i++) {
-    if (boards[i].hasAnyQueensConflicts() === false) {
+    // validate boards
+    if (board.hasAnyQueensConflicts() === false) {
       result++;
     }
-  }
+  });
   
   // end process and time trials
-  let end = new Date();
-  let runTime = end - start;
+  var end = new Date();
+  var runTime = end - start;
+  var midTime = middle - start;
   resultString = JSON.stringify(result);
   console.log(`Number of solutions for ${n} queens: ${result}`);
   console.log(`It took ${runTime}ms to run`);
+  console.log(`It took ${midTime}ms to generate seqs`);
   return result;
 };
